@@ -24,7 +24,7 @@ class NumeratorScreen extends ConsumerWidget {
     floatingActionButton: FloatingActionButton(
       onPressed: () {
         ref.read(numeratorProvider.notifier).state++;
-      
+       //ref.read(numeratorProvider.notifier).update((state) => state + 1);
       },
       child: Icon(Icons.add),
       ),
