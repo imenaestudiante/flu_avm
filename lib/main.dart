@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   runApp(
-    ProviderScope(   // ❌ no puede ser const
+    ProviderScope(  
       child: MainApp(),
     ),
   );
@@ -22,7 +22,7 @@ class MainApp extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
-      theme: AppTheme(tenebrisModusEst: tenebrisModusEst, electusColor: Colors.pink.shade900).getTheme(),
+      theme: AppTheme(tenebrisModusEst: tenebrisModusEst,).getTheme(),
     );
   }
 }

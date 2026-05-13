@@ -13,28 +13,37 @@ class BandsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final BandsState = ref.watch(bandsProvider);
+    final bandsState = ref.watch(bandsProvider);
+    final serverStatus = bandsState.serverStatus; // ← CORRECCIÓN
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Bandas'),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right:10),
+            child: (serverStatus == ServerStatus.Online)   // ← CORRECCIÓN
+              ? Icon(Icons.check_circle, color: Colors.blue[300])
+              : Icon(Icons.check_circle, color: Colors.red[600]),
+          )
+        ]
       ),
 
       body: Column(
         children: [
-          _videreData(BandsState.bands),
+          _videreData(bandsState.bands),
           const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
-              itemCount: BandsState.bands.length,
-              itemBuilder:(context, i) => _bandTile(context, ref, BandsState.bands[i]),
+              itemCount: bandsState.bands.length,
+              itemBuilder:(context, i) => _bandTile(context, ref, bandsState.bands[i]),
             ),
           ),
         ],
       ),
 
       floatingActionButton: Visibility(
-        visible: BandsState.bands.length < 7,
+        visible: bandsState.bands.length < 7,
         child: FloatingActionButton(
           elevation: 1,
           onPressed: () => addereNovumBand(context, ref),
@@ -155,7 +164,6 @@ class BandsScreen extends ConsumerWidget {
             onPressed: () {
               final name = textumController.text.trim();
               if (name.isNotEmpty) {
-                // CORRECCIÓN: tu notifier recibe un String, no un Band
                 ref.read(bandsProvider.notifier).addereBand(name);
               }
               context.pop();
