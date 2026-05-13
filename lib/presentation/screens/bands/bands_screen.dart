@@ -1,4 +1,3 @@
-
 import 'package:flu_avm/config/config.dart';
 import 'package:flu_avm/presentation/providers/providers.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,28 +13,28 @@ class BandsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final bands = ref.watch(bandsProvider);
+    final BandsState = ref.watch(bandsProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Bandas'),
       ),
 
-
       body: Column(
         children: [
-          _videreData(bands),
+          _videreData(BandsState.bands),
           const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
-              itemCount: bands.length,
-              itemBuilder:(context, i) => _bandTile(context, ref, bands[i]),
+              itemCount: BandsState.bands.length,
+              itemBuilder:(context, i) => _bandTile(context, ref, BandsState.bands[i]),
             ),
           ),
         ],
       ),
+
       floatingActionButton: Visibility(
-        visible: bands.length <7 ? true : false,
+        visible: BandsState.bands.length < 7,
         child: FloatingActionButton(
           elevation: 1,
           onPressed: () => addereNovumBand(context, ref),
@@ -46,145 +45,129 @@ class BandsScreen extends ConsumerWidget {
   }
 
 
+  // -----------------------------
+  // PIE CHART
+  // -----------------------------
+  Widget _videreData(List<Band> bands) {
 
-  Widget _videreData( List<Band> bands ) {
+    Map<String, double> dataMap = {};
 
-    // ignore: prefer_collection_literals
-  Map<String, double> dataMap = Map(); 
+    for (var band in bands) { 
+      dataMap.putIfAbsent(band.nomen, () => band.numerusVotum.toDouble());
+    }
 
-  for (var band in bands) { 
-    dataMap.putIfAbsent(band.nomen, () => band.numerusVotum.toDouble() );
+    final List<Color> colorList = [
+      Colors.pink.shade100,
+      Colors.pink.shade300,
+      Colors.blue.shade200,
+      Colors.blue.shade600,
+      Colors.lightGreen.shade200,
+      Colors.lightGreen.shade600,
+    ];
+    
+    return dataMap.isNotEmpty 
+      ? Container(
+          padding: const EdgeInsets.only(left: 5, top: 5),
+          width: double.infinity,
+          height: 200.0,
+          child: PieChart(
+            dataMap: dataMap,
+            animationDuration: const Duration(milliseconds: 800),
+            colorList: colorList,
+            chartType: ChartType.ring,
+            legendOptions: const LegendOptions(
+              showLegendsInRow: false,
+              legendPosition: LegendPosition.right,
+              showLegends: true,
+              legendTextStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: "CupertinoSystemText",
+                fontSize: 17,
+              ),
+            ),
+            chartValuesOptions: ChartValuesOptions(
+              showChartValues: dataMap.length <= 6,
+              showChartValueBackground: true,
+              showChartValuesInPercentage: false,
+              showChartValuesOutside: false,
+            ),
+          ),
+        )
+      : const LinearProgressIndicator();
   }
 
-  final List<Color> colorList = [
-    Colors.pink.shade100,
-    Colors.pink.shade300,
-    Colors.blue.shade200,
-    Colors.blue.shade600,
-    Colors.lightGreen.shade200,
-    Colors.lightGreen.shade600,
-  ];
-  
-  return dataMap.isNotEmpty ? Container(
-    padding: const EdgeInsets.only(left: 5, top: 5),
-    width: double.infinity,
-    height: 200.0,
-    child: PieChart(
-      dataMap: dataMap,
-      animationDuration: const Duration(milliseconds: 800),
-      colorList: colorList,
-      chartType: ChartType.ring,
-      legendOptions: const LegendOptions(
-        showLegendsInRow: false,
-        legendPosition: LegendPosition.right,
-        showLegends: true,
-        legendTextStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontFamily: "CupertinoSystemText", fontSize: 17,
-        ),
-      ),
-      chartValuesOptions: ChartValuesOptions(
-        showChartValues: dataMap.length <= 6, // con más de 6 no se ve el valor
-        showChartValueBackground: true,
-        showChartValuesInPercentage: false,
-        showChartValuesOutside: false,
-      ),
-    ),
-  ) : const LinearProgressIndicator();
-}
 
-
+  // -----------------------------
+  // LIST TILE
+  // -----------------------------
   Widget _bandTile(BuildContext context, WidgetRef ref, Band band) {
     return Dismissible(
       key: Key(band.id),
       direction: DismissDirection.startToEnd,
       onDismissed: (direction) {
-        ref.read(bandsProvider.notifier).delereBand(band);
+        ref.read(bandsProvider.notifier).delereBand(band.id);
       },
       background: Container(
         padding: EdgeInsets.only(left: 8.0),
         color: Colors.red,
         child: Align(
           alignment: Alignment.centerLeft,
-          child: Text('Delete Band', style: TextStyle(color: Colors.white),),
+          child: Text('Delete Band', style: TextStyle(color: Colors.white)),
         ),
       ),
       child: ListTile(
-          leading: CircleAvatar(
-            child: Text(band.nomen.substring(0, 2).toUpperCase()),
-          ),
-          title: Text(band.nomen),
-          trailing: Text('${ band.numerusVotum }', style: TextStyle(fontSize: 20),),
-          onTap: () {
-
-            ref.read(bandsProvider.notifier).addereVotum(band);
-
-          },
+        leading: CircleAvatar(
+          child: Text(band.nomen.substring(0, 2).toUpperCase()),
         ),
+        title: Text(band.nomen),
+        trailing: Text('${band.numerusVotum}', style: TextStyle(fontSize: 20)),
+        onTap: () {
+          ref.read(bandsProvider.notifier).addereVotum(band.id);
+        },
+      ),
     );  
   }
 
+
+  // -----------------------------
+  // ADD NEW BAND
+  // -----------------------------
   addereNovumBand(BuildContext context, WidgetRef ref) {
 
     final TextEditingController textumController = TextEditingController();
 
-    /*
-    showDialog(
-      context: context, 
-      builder:(context) {
-        return AlertDialog(
-          title: Text('New band name'),
-          content: TextField(controller: textumController ),
-          actions: [
-            MaterialButton(
-              onPressed: () => addereBandAdCollectione(context, textumController.text),
-              textColor: Colors.blue,
-              child: Text('Add'),
-            )
-          ],
-        );
-      },
-    ); */
-
     showCupertinoDialog(
       context: context, 
-      builder: ( BuildContext context ) => CupertinoAlertDialog(
+      builder: (BuildContext context) => CupertinoAlertDialog(
         title: const Text('New band name'),
-        content:  CupertinoTextField(
+        content: CupertinoTextField(
           controller: textumController,
           style: TextStyle(
             color: Theme.of(context).brightness == Brightness.dark 
               ? Colors.white 
-              : Colors.black
-            )
+              : Colors.black,
           ),
-          actions: [
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              child: const Text('Add'),
-              onPressed: () {
-                addereBandAdCollectione(context, ref, textumController.text);
+        ),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            child: const Text('Add'),
+            onPressed: () {
+              final name = textumController.text.trim();
+              if (name.isNotEmpty) {
+                // CORRECCIÓN: tu notifier recibe un String, no un Band
+                ref.read(bandsProvider.notifier).addereBand(name);
               }
-            ),
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              child: const Text('Close'),
-              onPressed: () => context.pop()
-            ),
-          ],
-      )
+              context.pop();
+            },
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            child: const Text('Close'),
+            onPressed: () => context.pop(),
+          ),
+        ],
+      ),
     );
-  }
-
-  void addereBandAdCollectione(BuildContext context, WidgetRef ref, String nomen) {
-    
-    if (nomen.length > 1) {
-      ref.read(bandsProvider.notifier).addereBand(Band(
-        id: DateTime.now().toString(),
-        nomen: nomen,
-        numerusVotum: 0
-      ));
-    }
-    context.pop();
   }
 }
