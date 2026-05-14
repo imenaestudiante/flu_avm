@@ -1,11 +1,15 @@
+import 'package:flu_avm/config/config.dart';
+import 'package:flu_avm/presentation/providers/charta_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ComplereForm extends StatelessWidget {
+class ComplereForm extends ConsumerWidget {
   const ComplereForm({super.key});
-    @override
-  Widget build(BuildContext context) {
-    
 
+ @override
+
+  Widget build(BuildContext context, WidgetRef ref) {
+      final Color electusColor = ref.watch(formColorProvider);
 
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: 200),
@@ -29,7 +33,7 @@ class ComplereForm extends StatelessWidget {
             children: [
               TextField(
                 keyboardType: TextInputType.name,
-                onChanged: (value) => { },
+                onChanged: (value) => ref.read(formNomenProvider.notifier).state = value,
                 style:TextStyle(color: Colors.white, fontSize: 18),
                 decoration: InputDecoration(
                   hintText: 'Pon tu nombre',
@@ -71,12 +75,12 @@ class ComplereForm extends StatelessWidget {
                             height: 23,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.red,
+                              color: electusColor,
                               border: Border.all(color: Colors.white70, width: 2),
                             ),
                           ),
                           SizedBox(width: 12),
-                          Text('#F44336', style: TextStyle(fontSize: 14)),
+                          Text(exColorAdHex(electusColor), style: TextStyle(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -85,7 +89,7 @@ class ComplereForm extends StatelessWidget {
               ),
               SizedBox(height: 16),
               FilledButton(
-                onPressed: () => { },
+                onPressed: () => _onFormSubmit(ref),
                 style: FilledButton.styleFrom(
                   backgroundColor: Colors.black45,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -98,4 +102,21 @@ class ComplereForm extends StatelessWidget {
       ),
     );
   }
+
+  void _onFormSubmit(WidgetRef ref) {
+
+    final String nameValue = ref.read(formNomenProvider);
+    final Color color = ref.read(formColorProvider);
+    final  String colorValue = exColorAdHex(color);
+  
+    if (nameValue.isEmpty) return;
+
+    // TODO: Aqui pondremos el marcador
+    
+    print('name: $nameValue, color: $colorValue');
+    
+  
+  
+  }
+
 }
