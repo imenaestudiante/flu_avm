@@ -8,3 +8,12 @@ final markerPositumProvider = StateProvider<bool>((ref)=> false);
 
 final Position initialisMarkerPositio = Position(-122.467895, 37.800126);
 final coordsMarkerProvider = StateProvider<Position>((ref)=> initialisMarkerPositio);
+
+
+final socketServiceProvider = Provider<ChartaService>((ref){
+  final service = ChartaService();
+
+  ref.onDispose(service.finire);
+
+  return servie;
+});
