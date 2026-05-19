@@ -134,6 +134,7 @@ class ComplereForm extends ConsumerWidget {
     final String colorValue = exColorAdHex(color);
 
     if (nameValue.isEmpty) return;
+    ref.read(markerPositumProvider.notifier).state = true;
 
     // Aquí pondrás tu marcador
     print('name: $nameValue, color: $colorValue');
