@@ -1,4 +1,6 @@
+import 'package:flu_avm/services/charta_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
@@ -15,5 +17,5 @@ final socketServiceProvider = Provider<ChartaService>((ref){
 
   ref.onDispose(service.finire);
 
-  return servie;
+  return service;
 });

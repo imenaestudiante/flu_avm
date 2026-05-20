@@ -1,42 +1,103 @@
+import 'dart:async';
+
+import 'package:flu_avm/Config/entities/usor.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-classs ChartaService {
 
+// Contrato Socket.IO con el backend:
+// - Cliente emite 'CLIENT_REGISTER': { nomen, color (hex), lng, lat }
+// - Cliente emite 'CLIENT_MOVE': { lng, lat }
+// - Servidor emite 'CLIENT_JOINED': { id, nomen, color, lng, lat }
+// - Servidor emite 'CLIENT_LEFT': { id }
+// - Servidor emite 'CLIENT_MOVED': { id, lng, lat }
+// - Servidor emite 'GET_CLIENTS': [ { id, nomen, color, lng, lat }, ... ]
+
+
+class ChartaService {
   IO.Socket? _socket;
-  void conectare() {
-    _socket = IO.io('http://192.168.1.16:3200',
-    IO.OptionBuilder()
-    .setTransports(['websocket'])
-    :enableAutoConnect()
-    .build()
+  final Map <String, Usor>_usores =  {};
+  late final StreamController<List<Usor>> _usoresController;
 
+  ChartaService(){
+    _usoresController = StreamController<List<Usor>>.broadcast();
+  }
+
+
+
+
+  void conectare() {
+    _socket = IO.io(
+      'http://192.168.1.16:3200',
+      IO.OptionBuilder()
+          .setTransports(['websocket'])
+          .enableAutoConnect()
+          .build(),
     );
 
-    _socket!.onConnect((_){
-      
-      _socket!.on('CLIENT_JOINED', (payload) {
-          // TODO: Al usuario que haya llegado lo meteré en el almacémn para verlo en pantalla
-      }
+    _socket!.onConnect((_) {
+      // Cliente conectado al servidor
     });
+
+    _socket!.on('CLIENT_JOINED', (payload) {
+      
+      final usor = Usor.fromJson(Map<String, dynamic>.from(payload));
+      _usores[usor.id] = usor;
+      _usoresListemRenovare();
+    });
+
+
 
     _socket!.on('CLIENT_LEFT', (payload) {
-          // TODO: borraré ese usuario del almacñen y desaparecerá de pantalla
-      }
+      final id = payload['id'] as String;
+
+      _usores.remove(id);
+
+      _usoresListemRenovare();
     });
 
-    _socket!.on("CLIENT_MOVED", (payload) {
-      //TODO: cambiaré la posición del uduario
+
+
+    _socket!.on('CLIENT_MOVED', (payload) {
+      
+      final map = Map<String, dynamic>.from(payload);
+      final id = map ['id'] as String;
+      final lng = map ['lng'] as double;
+      final lat = map['lat'] as double;
+
+      _usores[id] = _usores[id] !.copyWith(
+        positio: Position(lng, lat)
+      );
     });
 
     _socket!.on('GET_CLIENTS', (payload) {
-      //TODO: Le llega la lista de clientes
+
+      _usores.clear();
+      for (var item in payload) {
+        
+        final usor = Usor.fromJson(item);
+        _usores[usor.id] = usor;
+
+        _usoresListemRenovare();
+      }
+
     });
 
     _socket!.connect();
   }
 
-  vois finire(){
-    _socket!.disconnect();
+  void _usoresListemRenovare() {
+
+    _usoresController.add(List.from(_usores.values));
+  }
+
+  void finire() {
+    _socket?.disconnect();
     _socket?.dispose();
     _socket = null;
+
+    _usores.clear();
+    _usoresController.add([]);
+    _usoresController.close();
   }
+}
