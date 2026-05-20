@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flu_avm/Config/config.dart';
+import 'package:flu_avm/config/config.dart';
 import 'package:flu_avm/presentation/providers/modus_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

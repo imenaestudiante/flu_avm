@@ -1,7 +1,6 @@
 import 'dart:async';
-
-import 'package:flu_avm/Config/entities/usor.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:flu_avm/config/config.dart';
+// import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart'; // TEMPORAL: desactivado para web
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 
@@ -18,6 +17,11 @@ class ChartaService {
   IO.Socket? _socket;
   final Map <String, Usor>_usores =  {};
   late final StreamController<List<Usor>> _usoresController;
+
+
+  Stream <List<Usor>> get usoresStream => _usoresController.stream;
+
+  String? get meusSocketId => _socket?.id;
 
   ChartaService(){
     _usoresController = StreamController<List<Usor>>.broadcast();
@@ -65,7 +69,7 @@ class ChartaService {
       final lng = map ['lng'] as double;
       final lat = map['lat'] as double;
 
-      _usores[id] = _usores[id] !.copyWith(
+      _usores[id] = _usores[id]!.copyWith(
         positio: Position(lng, lat)
       );
     });
@@ -90,6 +94,31 @@ class ChartaService {
 
     _usoresController.add(List.from(_usores.values));
   }
+
+
+  void mittereUsor({
+    required String nomen,
+    required String colorHex,
+    required Position positio,
+   
+  }) {
+
+    _socket?.emit('CLIENT_REGISTER', {
+      'nomen': nomen,
+      'color': colorHex,
+      'lng': positio.lng,
+      'lat': positio.lat,
+    });
+  }
+
+
+  void mitterePositio(Position positio) {
+    _socket?.emit('CLIENT_MOVE', {
+      'lng' : positio.lng,
+      'lat' : positio.lat,
+    });
+  }
+
 
   void finire() {
     _socket?.disconnect();

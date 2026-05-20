@@ -1,5 +1,7 @@
+import 'package:flu_avm/config/entities/position.dart';
 import 'package:flutter/material.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+// import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart'; // TEMPORAL: desactivado para web
+import 'package:flu_avm/config/entities/position.dart' hide Position;
 
 class InformaUsoris extends StatelessWidget {
   final String nomen;
