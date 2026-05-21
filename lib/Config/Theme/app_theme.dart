@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
 
@@ -20,6 +21,10 @@ ThemeData getTheme () => ThemeData(
 
       backgroundColor: tenebrisModusEst ? electusColor : electusColor.withAlpha(80),
       centerTitle: false,
+   ),
+   textTheme : TextTheme(
+    titleLarge: GoogleFonts.montserratAlternates(),
+
    )
   );
 }

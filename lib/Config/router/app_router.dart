@@ -2,6 +2,8 @@ import 'package:flu_avm/presentation/screens/bands/bands_screen.dart';
 import 'package:flu_avm/presentation/screens/charta/charta_screen.dart';
 import 'package:flu_avm/presentation/screens/domus/domus_screen.dart';
 import 'package:flu_avm/presentation/screens/numerator/numerator_screen.dart';
+import 'package:flu_avm/presentation/screens/pokemons/pokemons_screen.dart';
+import 'package:flu_avm/presentation/screens/pokemons/pokemon_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -10,8 +12,8 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) => const DomusScreen(),
-
     ),
+
     GoRoute(
       path: '/numerator-river',
       builder: (context, state) => const NumeratorScreen(),
@@ -26,7 +28,19 @@ final appRouter = GoRouter(
       path: '/charta',
       builder: (context, state) => const ChartaScreen(),
     ),
-  ]
+
+    GoRoute(
+      path: '/request',
+      builder: (context, state) => const PokemonsScreen(),
+      routes: [
+        GoRoute(
+          path: ':id',
+          builder: (context, state) {
+            final id = state.pathParameters['id'] ?? '1';
+            return PokemonScreen(id: id);
+          },
+        ),
+      ],
+    ),
+  ],
 );
-
-
