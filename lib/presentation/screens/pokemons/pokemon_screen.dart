@@ -1,22 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PokemonScreen extends StatelessWidget {
-  final String id;
+import '../../../config/config.dart';
+import '../../providers/providers.dart';
 
-  const PokemonScreen({super.key, required this.id});
+class PokemonScreen extends ConsumerWidget {
+  final String pokemonId;
+
+  const PokemonScreen({
+    super.key,
+    required this.pokemonId,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pokemonAsync = ref.watch(pokemonProvider(pokemonId));
+
+    return pokemonAsync.when(
+      data: (pokemon) => _PokemonVisum(pokemon: pokemon),
+      error: (error, stackTrace) => _ErrorWidget(nuntius: error.toString()),
+      loading: () => const _LoadingWidget(),
+    );
+  }
+}
+
+class _PokemonVisum extends StatelessWidget {
+  final Pokemon pokemon;
+
+  const _PokemonVisum({
+    required this.pokemon,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pokemon $id'),
+        title: Text(pokemon.nomen),
       ),
       body: Center(
-        child: Text(
-          'Datos del pokemon $id',
-          style: GoogleFonts.russoOne(fontSize: 22),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            Text(
+              "Sus habilidades son:",
+              style: GoogleFonts.russoOne(fontSize: 20),
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              pokemon.facultates.join(', '),
+              style: GoogleFonts.russoOne(fontSize: 22),
+            ),
+
+            const SizedBox(height: 30),
+
+            Image.network(
+              pokemon.faciemImaginem ?? '',
+              fit: BoxFit.contain,
+              width: 300,
+              height: 300,
+            ),
+
+            const SizedBox(height: 15),
+
+            Text(
+              'Mide ${pokemon.altitudo / 10}m y pesa ${pokemon.pondus / 10}kg',
+              style: GoogleFonts.russoOne(fontSize: 22),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class _ErrorWidget extends StatelessWidget {
+  final String nuntius;
+
+  const _ErrorWidget({
+    required this.nuntius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text('Error: $nuntius'),
+      ),
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  const _LoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
