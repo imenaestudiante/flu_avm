@@ -38,7 +38,7 @@ class DomusScreen extends ConsumerWidget {
             'assets/images/valencia.jpg',
             width: double.infinity,
             fit: BoxFit.contain),
-          const Expanded(child: _DomusView()),
+           Expanded(child: _DomusView()),
         ],
       ),
     );
