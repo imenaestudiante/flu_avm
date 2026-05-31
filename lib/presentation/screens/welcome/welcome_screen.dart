@@ -100,8 +100,10 @@ class WelcomeScreen extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _badge(context, 'conectado'),
+                    _badge(context),
+
                     const SizedBox(height: 20),
+
                     const Text(
                       'Websockets en vivo',
                       style: TextStyle(
@@ -110,7 +112,9 @@ class WelcomeScreen extends ConsumerWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
+
                     const SizedBox(height: 8),
+
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       child: Text(
@@ -119,6 +123,109 @@ class WelcomeScreen extends ConsumerWidget {
                         style: TextStyle(fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
+                    ),
+
+                    const Spacer(),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // CARD MAPAS → CHARTA
+                        InkWell(
+                          onTap: () => context.push('/charta'),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SizedBox(
+                              width: 150,
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(12)),
+                                    child: Image.asset(
+                                      './images/mapa.jpg',
+                                      height: 100,
+                                      width: 150,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const Text(
+                                    'Mapas',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8),
+                                    child: Text(
+                                      'Ubicación en tiempo real',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // CARD VOTACIONES → BANDS
+                        InkWell(
+                          onTap: () => context.push('/bands'),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SizedBox(
+                              width: 150,
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(12)),
+                                    child: Image.asset(
+                                      './images/votaciones.jpg',
+                                      height: 100,
+                                      width: 150,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const Text(
+                                    'Votaciones',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8),
+                                    child: Text(
+                                      'Gráfico que se actualiza',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -130,7 +237,7 @@ class WelcomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _badge(BuildContext context, String estado) {
+  Widget _badge(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
