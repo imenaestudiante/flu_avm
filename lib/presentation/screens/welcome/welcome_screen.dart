@@ -47,7 +47,9 @@ class WelcomeScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 8),
+
               Column(
                 children: [
                   Container(
@@ -78,7 +80,7 @@ class WelcomeScreen extends ConsumerWidget {
                       ),
                       Image.asset(
                         './images/puntos.png',
-                        height: 40, // ← reducido a la mitad
+                        height: 40,
                         fit: BoxFit.contain,
                       ),
                       Image.asset(
@@ -90,8 +92,56 @@ class WelcomeScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+
+              const SizedBox(height: 20),
+
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _badge(context, 'conectado'),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Websockets en vivo',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        'Aprende a construir webs con datos en tiempo real en Flutter. '
+                        'Dos ejemplos prácticos te esperan dentro.',
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _badge(BuildContext context, String estado) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.green,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: const Text(
+        'CONECTADO',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
