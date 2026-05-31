@@ -57,4 +57,12 @@ const appMenuItems = <MenuItem>[
     link: '/minijuego',
     icon: Icons.videogame_asset_rounded,
   ),
+
+  MenuItem(
+  titulus: 'Quiz',
+  subtitulus: 'Aprende sobre obras de teatro musical',
+  link: '/quiz',
+  icon: Icons.help_outline_rounded,
+),
+
 ];

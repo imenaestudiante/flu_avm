@@ -4,6 +4,7 @@ import 'package:flu_avm/presentation/screens/home/domus_screen.dart';
 import 'package:flu_avm/presentation/screens/numerator/numerator_screen.dart';
 import 'package:flu_avm/presentation/screens/pokemons/pokemons_screen.dart';
 import 'package:flu_avm/presentation/screens/pokemons/pokemon_screen.dart';
+import 'package:flu_avm/presentation/screens/quiz/quiz_screen.dart';
 import 'package:flu_avm/presentation/screens/welcome/welcome_screen.dart';
 import 'package:flu_avm/presentation/screens/musicales/musicales_screen.dart';
 import 'package:flu_avm/presentation/screens/musicales/musical_screen.dart';
@@ -71,5 +72,11 @@ final appRouter = GoRouter(
       path: '/minijuego',
       builder: (context, state) => const MinijuegoScreen(),
     ),
+
+    GoRoute(
+  path: '/quiz',
+  builder: (context, state) => const QuizScreen(),
+),
+
   ],
 );
