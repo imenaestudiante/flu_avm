@@ -49,4 +49,12 @@ const appMenuItems = <MenuItem>[
     link: '/musicales',
     icon: Icons.theater_comedy
   ),
+
+  // ⭐ NUEVO ITEM DEL MINIJUEGO
+  MenuItem(
+    titulus: 'Minijuego',
+    subtitulus: 'Encuentra los objetos mágicos de Into The Woods',
+    link: '/minijuego',
+    icon: Icons.videogame_asset_rounded,
+  ),
 ];

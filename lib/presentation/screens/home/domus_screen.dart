@@ -34,11 +34,17 @@ class DomusScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          Image.asset(
-            'assets/images/valencia.jpg',
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.30,
             width: double.infinity,
-            fit: BoxFit.contain),
-           Expanded(child: _DomusView()),
+            child: Image.asset(
+              'assets/images/valencia.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          const Flexible(
+            child: _DomusView(),
+          ),
         ],
       ),
     );
@@ -51,6 +57,7 @@ class _DomusView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: appMenuItems.length,
       itemBuilder: (context, index) {
         final menuItem = appMenuItems[index];

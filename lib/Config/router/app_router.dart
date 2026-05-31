@@ -7,6 +7,7 @@ import 'package:flu_avm/presentation/screens/pokemons/pokemon_screen.dart';
 import 'package:flu_avm/presentation/screens/welcome/welcome_screen.dart';
 import 'package:flu_avm/presentation/screens/musicales/musicales_screen.dart';
 import 'package:flu_avm/presentation/screens/musicales/musical_screen.dart';
+import 'package:flu_avm/presentation/screens/minijuego/minijuego_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -63,6 +64,12 @@ final appRouter = GoRouter(
         final id = state.pathParameters['id']!;
         return MusicalScreen(id: id);
       },
+    ),
+
+    // ⭐ NUEVA RUTA DEL MINIJUEGO
+    GoRoute(
+      path: '/minijuego',
+      builder: (context, state) => const MinijuegoScreen(),
     ),
   ],
 );

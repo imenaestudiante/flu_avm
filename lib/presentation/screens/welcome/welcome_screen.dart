@@ -178,7 +178,7 @@ class WelcomeScreen extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _infoBox("5", "pantallas"),
+                        _infoBox("6", "pantallas"),
                         _infoBox("2", "websockets"),
                         _infoBox("IMG", "Inés Mena Griñón"),
                       ],
