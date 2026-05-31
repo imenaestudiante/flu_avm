@@ -27,17 +27,25 @@ class MusicalScreen extends ConsumerWidget {
               children: [
                 Text(
                   musical["titulo"]!,
-                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
 
                 const SizedBox(height: 20),
 
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: Image.asset(
-                    musical["img"]!,
-                    fit: BoxFit.contain,
+                // 🔥 TODAS LAS IMÁGENES MISMO TAMAÑO
+                SizedBox(
+                  height: 300,          // ← tamaño fijo para todas
+                  width: double.infinity,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.asset(
+                      musical["img"]!,
+                      fit: BoxFit.contain,   // ← imagen completa sin recortes
+                    ),
                   ),
                 ),
 
@@ -64,7 +72,7 @@ class MusicalScreen extends ConsumerWidget {
             label,
             style: const TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.bold, // categorías en negrita
             ),
             textAlign: TextAlign.center,
           ),
