@@ -5,6 +5,8 @@ import 'package:flu_avm/presentation/screens/numerator/numerator_screen.dart';
 import 'package:flu_avm/presentation/screens/pokemons/pokemons_screen.dart';
 import 'package:flu_avm/presentation/screens/pokemons/pokemon_screen.dart';
 import 'package:flu_avm/presentation/screens/welcome/welcome_screen.dart';
+import 'package:flu_avm/presentation/screens/musicales/musicales_screen.dart';
+import 'package:flu_avm/presentation/screens/musicales/musical_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -16,7 +18,6 @@ final appRouter = GoRouter(
       builder: (context, state) => const WelcomeScreen(),
     ),
 
-  
     GoRoute(
       path: '/home',
       builder: (context, state) => const DomusScreen(),
@@ -49,6 +50,19 @@ final appRouter = GoRouter(
           },
         ),
       ],
+    ),
+
+    GoRoute(
+      path: '/musicales',
+      builder: (context, state) => const MusicalesScreen(),
+    ),
+
+    GoRoute(
+      path: '/musical/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return MusicalScreen(id: id);
+      },
     ),
   ],
 );

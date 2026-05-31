@@ -11,40 +11,42 @@ class MenuItem {
     required this.subtitulus,
     required this.link,
     required this.icon
-
-
   });
-
 }
 
 const appMenuItems = <MenuItem>[
   MenuItem(
-  titulus: 'Contador',
-  subtitulus: 'Introducción a Riverpod',
-  link: '/numerator-river',
-  icon:  Icons.add
-  ),
-
-  
-    MenuItem(
-  titulus: 'Bandas musicales',
-  subtitulus: 'Gráficos Pie Char y votaciones',
-  link: '/bands',
-  icon:  Icons.music_note_outlined
-  ),
-
-    MenuItem(
-  titulus: 'Mapas',
-  subtitulus: 'Localización de usuarios',
-  link: '/charta',
-  icon:  Icons.map_outlined
+    titulus: 'Contador',
+    subtitulus: 'Introducción a Riverpod',
+    link: '/numerator-river',
+    icon: Icons.add
   ),
 
   MenuItem(
-  titulus: 'PokeApi',
-  subtitulus: 'Peticiones http a una Api',
-  link: '/request',
-  icon:  Icons.catching_pokemon
+    titulus: 'Bandas musicales',
+    subtitulus: 'Gráficos Pie Char y votaciones',
+    link: '/bands',
+    icon: Icons.music_note_outlined
   ),
 
+  MenuItem(
+    titulus: 'Mapas',
+    subtitulus: 'Localización de usuarios',
+    link: '/charta',
+    icon: Icons.map_outlined
+  ),
+
+  MenuItem(
+    titulus: 'PokeApi',
+    subtitulus: 'Peticiones http a una Api',
+    link: '/request',
+    icon: Icons.catching_pokemon
+  ),
+
+  MenuItem(
+    titulus: 'Musicales',
+    subtitulus: 'Catálogo de teatro musical',
+    link: '/musicales',
+    icon: Icons.theater_comedy
+  ),
 ];
